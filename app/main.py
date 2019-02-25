@@ -55,7 +55,7 @@ def move():
     TODO: Using the data from the endpoint request object, your
             snake AI must choose a direction to move in.
     """
-    print(json.dumps(data))
+    # print(json.dumps(data))
 
     directions = ['up', 'down', 'left', 'right']
     direction = calculateDirection(data)
@@ -71,7 +71,7 @@ def end():
     TODO: If your snake AI was stateful,
         clean up any stateful objects here.
     """
-    print(json.dumps(data))
+   # print(json.dumps(data))
 
     return end_response()
 
