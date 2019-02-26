@@ -1,4 +1,4 @@
-import json
+from util import CalculateDistance
 
 def calculateDirection(data):
     foods = data["board"]["food"]
@@ -78,11 +78,11 @@ def isPossibleMove(direction, bodyPositions, height, width):
 
 def getClosestFood(foods, headPos):
 
-    closestDistance = calculateDistance(foods[0], headPos)
+    closestDistance = CalculateDistance(foods[0], headPos)
     closestFood = foods[0]
 
     for food in foods:
-        newDistance = calculateDistance(food, headPos)
+        newDistance = CalculateDistance(food, headPos)
         if closestDistance > newDistance:
             closestDistance = newDistance
             closestFood = food
@@ -91,28 +91,6 @@ def getClosestFood(foods, headPos):
     print(closestDistance)
     print(headPos)
     return closestFood
-
-def calculateDistance(food, headPos):
-
-    distance = 0;
-
-    food_x = food["x"];
-    food_y = food["y"];
-
-    headPos_x = headPos["x"];
-    headPos_y = headPos["y"];
-
-    if headPos_x < food_x:
-        distance = distance + food_x - headPos_x
-    else:
-        distance = distance + headPos_x - food_x
-
-    if headPos_y < food_y:
-        distance = distance + food_y - headPos_y
-    else:
-        distance = distance + headPos_y - food_y
-
-    return distance
 
 
 
