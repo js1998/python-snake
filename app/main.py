@@ -1,10 +1,11 @@
 import json
 import os
-import random
+
 import bottle
 
 from api import ping_response, start_response, move_response, end_response
-from food import calculateDirection
+# from food import calculateDirection
+from choose_dir import calculateDirection
 
 @bottle.route('/')
 def index():
@@ -55,7 +56,7 @@ def move():
     TODO: Using the data from the endpoint request object, your
             snake AI must choose a direction to move in.
     """
-    print(json.dumps(data))
+    # print(json.dumps(data))
 
     directions = ['up', 'down', 'left', 'right']
     direction = calculateDirection(data)
@@ -71,7 +72,7 @@ def end():
     TODO: If your snake AI was stateful,
         clean up any stateful objects here.
     """
-    print(json.dumps(data))
+   # print(json.dumps(data))
 
     return end_response()
 
