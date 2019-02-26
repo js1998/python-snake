@@ -1,6 +1,6 @@
 import json
 import random
-from util import CalculateDistance, IsPossibleMove
+from util import CalculateDistance, optimal_move, possible_move
 
 
 
@@ -52,7 +52,7 @@ def directionToFood(food, bodyPositions, height, width):
 
 
 def getClosestFood(foods, headPos):
-    closestDistance = calculateDistance(foods[0], headPos)
+    closestDistance = CalculateDistance(foods[0], headPos)
     closestFood = foods[0]
 
     for food in foods:
@@ -61,3 +61,4 @@ def getClosestFood(foods, headPos):
             closestDistance = newDistance
             closestFood = food
 
+    return closestFood
