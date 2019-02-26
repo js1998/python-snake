@@ -1,21 +1,38 @@
-def CalculateDistance(food, headPos):
+def CalculateDistance(dest, headPos):
 
-    distance = 0
-
-    food_x = food["x"]
-    food_y = food["y"]
+    dest_x = dest["x"]
+    dest_y = dest["y"]
 
     headPos_x = headPos["x"]
     headPos_y = headPos["y"]
 
-    if headPos_x < food_x:
-        distance = distance + food_x - headPos_x
-    else:
-        distance = distance + headPos_x - food_x
+    return abs(dest_x - headPos_x) + abs(dest_y - headPos_y)
 
-    if headPos_y < food_y:
-        distance = distance + food_y - headPos_y
-    else:
-        distance = distance + headPos_y - food_y
+def IsPossibleMove(direction, bodyPositions, height, width):
+    headPos = bodyPositions[0]
 
-    return distance
+    i = 1
+    while i < len(bodyPositions):
+
+        headPos_x = headPos["x"]
+        headPos_y = headPos["y"]
+
+        bodyPos_x = bodyPositions[i]["x"]
+        bodyPos_y = bodyPositions[i]["y"]
+
+        if direction == "up":
+            if (headPos_y - bodyPos_y == 1 and headPos_x == bodyPos_x) or headPos_y == 0:
+                return False
+        if direction == "down":
+            if (bodyPos_y - headPos_y == 1 and headPos_x == bodyPos_x) or headPos_y == height - 1:
+                return False
+        if direction == "right":
+            if (bodyPos_x - headPos_x == 1 and headPos_y == bodyPos_y) or headPos_x == width - 1:
+                return False
+        if direction == "left":
+            if (headPos_x - bodyPos_x == 1 and headPos_y == bodyPos_y) or headPos["x"] == 0:
+                return False
+
+        i = i + 1
+
+    return True
