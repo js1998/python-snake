@@ -1,10 +1,11 @@
 import json
 import os
-import random
+
 import bottle
 
 from api import ping_response, start_response, move_response, end_response
-from food import calculateDirection
+# from food import calculateDirection
+from choose_dir import calculateDirection
 
 @bottle.route('/')
 def index():

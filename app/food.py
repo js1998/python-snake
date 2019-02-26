@@ -1,17 +1,20 @@
 import json
 import random
 
-def calculateDirection(data):
-    foods = data["board"]["food"]
-    bodyPos = data["you"]["body"]
-    height = data["board"]["height"]
-    width = data["board"]["width"]
+#Retired but didnt wanna delete
 
-    # nearestFood = getClosestFood(foods, bodyPos[0])
-    print('turn number {}'.format(data['turn']))
-    print("head loc({} {}) and food loc({} {})".format(bodyPos[0]['x'], bodyPos[0]['y'], foods[0]['x'], foods[0]['y']))
-    # print(directionToFood(foods[0], bodyPos, height, width))
-    return directionToFood(foods[0], bodyPos, height, width)
+#
+# def calculateDirection(data):
+#     foods = data["board"]["food"]
+#     curr_pos = data["you"]["body"]
+#     height = data["board"]["height"]
+#     width = data["board"]["width"]
+#
+#     # nearestFood = getClosestFood(foods, curr_pos[0])
+#     print('turn number {}'.format(data['turn']))
+#     print("head loc({} {}) and food loc({} {})".format(curr_pos[0]['x'], curr_pos[0]['y'], foods[0]['x'], foods[0]['y']))
+#     # print(directionToFood(foods[0], curr_pos, height, width))
+#     return directionToFood(foods[0], curr_pos, height, width)
 
 
 def directionToFood(food, bodyPositions, height, width):
@@ -21,24 +24,24 @@ def directionToFood(food, bodyPositions, height, width):
     movedTried = []
 
     if int(food["y"]) < int(headPos["y"]):
-        print('trying up')
+        print('f trying up')
         if optimal_move("up", bodyPositions, height, width):
             return "up"
     elif int(food["y"]) > int(headPos["y"]):
-        print('trying down')
+        print('f trying down')
         if optimal_move("down", bodyPositions, height, width):
             return "down"
 
     if int(food["x"]) < int(headPos["x"]):
-        print('trying left')
+        print('f trying left')
         if optimal_move("left", bodyPositions, height, width):
             return "left"
     elif int(food["x"]) > int(headPos["x"]):
-        print('trying right')
+        print('f trying right')
         if optimal_move("right", bodyPositions, height, width):
             return "right"
 
-    print('I ended up in moveTried')
+    print('f I ended up in moveTried')
     if "up" not in movedTried and possible_move("up", bodyPositions, height, width):
         movedTried.append("up")
         # return "up"
@@ -134,9 +137,9 @@ def getClosestFood(foods, headPos):
             closestDistance = newDistance
             closestFood = food
 
-    print(closestFood)
-    print(closestDistance)
-    print(headPos)
+    # print(closestFood)
+    # print(closestDistance)
+    # print(headPos)
     return closestFood
 
 
