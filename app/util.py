@@ -1,5 +1,4 @@
 
-
 def CalculateDistance(dest, headPos):
 
     dest_x = dest["x"]

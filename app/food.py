@@ -1,20 +1,7 @@
 import json
 import random
+from util import CalculateDistance, IsPossibleMove
 
-#Retired but didnt wanna delete
-
-#
-# def calculateDirection(data):
-#     foods = data["board"]["food"]
-#     curr_pos = data["you"]["body"]
-#     height = data["board"]["height"]
-#     width = data["board"]["width"]
-#
-#     # nearestFood = getClosestFood(foods, curr_pos[0])
-#     print('turn number {}'.format(data['turn']))
-#     print("head loc({} {}) and food loc({} {})".format(curr_pos[0]['x'], curr_pos[0]['y'], foods[0]['x'], foods[0]['y']))
-#     # print(directionToFood(foods[0], curr_pos, height, width))
-#     return directionToFood(foods[0], curr_pos, height, width)
 
 
 def directionToFood(food, bodyPositions, height, width):
@@ -62,104 +49,15 @@ def directionToFood(food, bodyPositions, height, width):
     return dir
 
 
-def optimal_move(direction, bodyPositions, height, width):
-    headPos = bodyPositions[0]
 
-    i = 1
-    while i < len(bodyPositions):
-
-        headPos_x = headPos["x"]
-        headPos_y = headPos["y"]
-
-        bodyPos_x = bodyPositions[i]["x"]
-        bodyPos_y = bodyPositions[i]["y"]
-
-        dist_y = bodyPos_y - headPos_y
-        dist_x = bodyPos_x - headPos_x
-
-        if direction == "up":
-            if (abs(dist_y) <= 2 and bodyPos_y < headPos_y and headPos_x == bodyPos_x) or headPos_y == 0:
-                return False
-        if direction == "down":
-            if (abs(dist_y) <= 2 and bodyPos_y > headPos_y and headPos_x == bodyPos_x) or headPos_y == height - 1:
-                return False
-        if direction == "right":
-            if (abs(dist_x) <= 2 and bodyPos_x > headPos_x and headPos_y == bodyPos_y) or headPos_x == width - 1:
-                return False
-        if direction == "left":
-            if (abs(dist_x) <= 2 and bodyPos_x < headPos_x and headPos_y == bodyPos_y) or headPos_x == 0:
-                return False
-
-        i = i + 1
-
-    return True
-
-
-def possible_move(direction, bodyPositions, height, width):
-    headPos = bodyPositions[0]
-
-    i = 1
-    while i < len(bodyPositions):
-
-        headPos_x = headPos["x"]
-        headPos_y = headPos["y"]
-
-        bodyPos_x = bodyPositions[i]["x"]
-        bodyPos_y = bodyPositions[i]["y"]
-
-        dist_y = bodyPos_y - headPos_y
-        dist_x = bodyPos_x - headPos_x
-
-        if direction == "up":
-            if (abs(dist_y) <= 1 and bodyPos_y < headPos_y and headPos_x == bodyPos_x) or headPos_y == 0:
-                return False
-        if direction == "down":
-            if (abs(dist_y) <= 1 and bodyPos_y > headPos_y and headPos_x == bodyPos_x) or headPos_y == height - 1:
-                return False
-        if direction == "right":
-            if (abs(dist_x) <= 1 and bodyPos_x > headPos_x and headPos_y == bodyPos_y) or headPos_x == width - 1:
-                return False
-        if direction == "left":
-            if (abs(dist_x) <= 1 and bodyPos_x < headPos_x and headPos_y == bodyPos_y) or headPos_x == 0:
-                return False
-
-        i = i + 1
-
-    return True
 
 def getClosestFood(foods, headPos):
     closestDistance = calculateDistance(foods[0], headPos)
     closestFood = foods[0]
 
     for food in foods:
-        newDistance = calculateDistance(food, headPos)
+        newDistance = CalculateDistance(food, headPos)
         if closestDistance > newDistance:
             closestDistance = newDistance
             closestFood = food
 
-    # print(closestFood)
-    # print(closestDistance)
-    # print(headPos)
-    return closestFood
-
-
-def calculateDistance(food, headPos):
-    distance = 0;
-
-    food_x = food["x"];
-    food_y = food["y"];
-
-    headPos_x = headPos["x"];
-    headPos_y = headPos["y"];
-
-    if headPos_x < food_x:
-        distance = distance + food_x - headPos_x
-    else:
-        distance = distance + headPos_x - food_x
-
-    if headPos_y < food_y:
-        distance = distance + food_y - headPos_y
-    else:
-        distance = distance + headPos_y - food_y
-
-    return distance
