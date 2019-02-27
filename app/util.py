@@ -10,32 +10,32 @@ def CalculateDistance(dest, headPos):
     return abs(dest_x - headPos_x) + abs(dest_y - headPos_y)
 
 
-def optimal_move(direction, bodyPositions, height, width):
-    headPos = bodyPositions[0]
+def optimal_move(direction, you, occupied, height, width):
+    headPos = you[0]
 
     i = 1
-    while i < len(bodyPositions):
+    while i < len(occupied):
 
         headPos_x = headPos["x"]
         headPos_y = headPos["y"]
 
-        bodyPos_x = bodyPositions[i]["x"]
-        bodyPos_y = bodyPositions[i]["y"]
+        taken_x = occupied[i]["x"]
+        taken_y = occupied[i]["y"]
 
-        dist_y = bodyPos_y - headPos_y
-        dist_x = bodyPos_x - headPos_x
+        dist_y = taken_y - headPos_y
+        dist_x = taken_x - headPos_x
 
         if direction == "up":
-            if (abs(dist_y) <= 2 and bodyPos_y < headPos_y and headPos_x == bodyPos_x) or headPos_y == 0:
+            if (abs(dist_y) <= 2 and taken_y < headPos_y and headPos_x == taken_x) or headPos_y == 0:
                 return False
         if direction == "down":
-            if (abs(dist_y) <= 2 and bodyPos_y > headPos_y and headPos_x == bodyPos_x) or headPos_y == height - 1:
+            if (abs(dist_y) <= 2 and taken_y > headPos_y and headPos_x == taken_x) or headPos_y == height - 1:
                 return False
         if direction == "right":
-            if (abs(dist_x) <= 2 and bodyPos_x > headPos_x and headPos_y == bodyPos_y) or headPos_x == width - 1:
+            if (abs(dist_x) <= 2 and taken_x > headPos_x and headPos_y == taken_y) or headPos_x == width - 1:
                 return False
         if direction == "left":
-            if (abs(dist_x) <= 2 and bodyPos_x < headPos_x and headPos_y == bodyPos_y) or headPos_x == 0:
+            if (abs(dist_x) <= 2 and taken_x < headPos_x and headPos_y == taken_y) or headPos_x == 0:
                 return False
 
         i = i + 1
@@ -43,29 +43,32 @@ def optimal_move(direction, bodyPositions, height, width):
     return True
 
 
-def possible_move(direction, bodyPositions, height, width):
-    headPos = bodyPositions[0]
+def possible_move(direction, you, occupied, height, width):
+    head_pos = you[0]
 
     i = 1
-    while i < len(bodyPositions):
+    while i < len(occupied):
 
-        headPos_x = headPos["x"]
-        headPos_y = headPos["y"]
+        head_pos_x = head_pos["x"]
+        head_pos_y = head_pos["y"]
 
-        bodyPos_x = bodyPositions[i]["x"]
-        bodyPos_y = bodyPositions[i]["y"]
+        taken_x = occupied[i]["x"]
+        taken_y = occupied[i]["y"]
+
+        dist_y = taken_y - head_pos_y
+        dist_x = taken_x - head_pos_x
 
         if direction == "up":
-            if (headPos_y - bodyPos_y == 1 and headPos_x == bodyPos_x) or headPos_y == 0:
+            if (abs(dist_y)==1 and taken_y < head_pos_y and head_pos_x == taken_x) or head_pos_y == 0:
                 return False
         if direction == "down":
-            if (bodyPos_y - headPos_y == 1 and headPos_x == bodyPos_x) or headPos_y == height - 1:
+            if (abs(dist_y)==1 and taken_y > head_pos_y and head_pos_x == taken_x) or head_pos_y == height - 1:
                 return False
         if direction == "right":
-            if (bodyPos_x - headPos_x == 1 and headPos_y == bodyPos_y) or headPos_x == width - 1:
+            if (abs(dist_x)==1 and taken_x > head_pos_x and head_pos_y == taken_y) or head_pos_x == width - 1:
                 return False
         if direction == "left":
-            if (headPos_x - bodyPos_x == 1 and headPos_y == bodyPos_y) or headPos["x"] == 0:
+            if (abs(dist_x)==1 and taken_x < head_pos_x and head_pos_y == taken_y) or head_pos["x"] == 0:
                 return False
 
         i = i + 1
