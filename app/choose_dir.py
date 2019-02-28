@@ -18,7 +18,7 @@ def calculateDirection(data):
     print("turn number {}".format(data["turn"]))
 
     # Dying so go get food
-    if health < 50 or data['turn'] < 6:
+    if foods and (health < 50 or data['turn'] < 4):
         nearest_food = food.getClosestFood(foods, you[0])
         print("headloc({} {}) + foodloc({} {})".format(body_pos[0]['x'], body_pos[0]['y'], nearest_food['x'], nearest_food['y']))
         return food.directionToFood(food=nearest_food,

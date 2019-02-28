@@ -10,6 +10,35 @@ def CalculateDistance(dest, headPos):
     return abs(dest_x - headPos_x) + abs(dest_y - headPos_y)
 
 
+def corner_check(head, occupied, direction):
+    count = 0
+
+    if direction == 'left':
+        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
+            count += 1
+        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
+            count += 1
+
+    elif direction == 'right':
+        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
+            count += 1
+        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
+            count += 1
+
+    elif direction == 'up':
+        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
+            count += 1
+        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
+            count += 1
+
+    elif direction == 'right':
+        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
+            count += 1
+        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
+            count += 1
+    return count
+    
+
 def optimal_move(direction, you, occupied, height, width):
     headPos = you[0]
 
