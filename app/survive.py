@@ -6,48 +6,55 @@ import random
 
 def findTail(you, occupied, width, height):
     # Finds square closest to tail and moves in that direction
-    headPos = you[0]
-    tailPos = you[-1]
+    head_pos = you[0]
+    tail_pos = you[-1]
 
-    movedTried = []
+    move_score = {}
 
-    if headPos['y'] < tailPos['y']:
+    if head_pos['y'] < tail_pos['y']:
         print('s trying down')
-        if util.optimal_move('down', you, occupied, width, height):
+        if util.choose_move('down', you, occupied, width, height, spacing=2):
             return "down"
 
-    if headPos['y'] > tailPos['y']:
+    if head_pos['y'] > tail_pos['y']:
         print('s trying up')
-        if util.optimal_move('up', you, occupied, width, height):
+        if util.choose_move('up', you, occupied, width, height, spacing=2):
             return "up"
 
-    if headPos['x'] < tailPos['x']:
+    if head_pos['x'] < tail_pos['x']:
         print('s trying right')
-        if util.optimal_move('right', you, occupied, width, height):
+        if util.choose_move('right', you, occupied, width, height, spacing=2):
             return "right"
 
-    if headPos['x'] > tailPos['x']:
+    if head_pos['x'] > tail_pos['x']:
         print('s trying left')
-        if util.optimal_move('left', you, occupied, width, height):
+        if util.choose_move('left', you, occupied, width, height, spacing=2):
             return "left"
 
-    print('s I ended up in moveTried')
-    if "up" not in movedTried and util.possible_move("up", you, occupied, height, width):
-        movedTried.append("up")
-        # return "up"
-    if "down" not in movedTried and util.possible_move("down", you, occupied, height, width):
-        movedTried.append("down")
-        # return "down"
-    if "left" not in movedTried and util.possible_move("left", you, occupied, height, width):
-        movedTried.append("left")
-        # return "left"
-    if "right" not in movedTried and util.possible_move("right", you, occupied, height, width):
-        movedTried.append("right")
-        # return "right"
-    if not movedTried:
-        print('failure, no possible moves')
-        dir = "left"
+    print('f I ended up in moveTried')
+    if util.choose_move("up", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "up")
+        move_score["up"] = score
+
+    if util.choose_move("down", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "down")
+        move_score["down"] = score
+
+    if util.choose_move("left", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "left")
+        move_score["left"] = score
+
+    if util.choose_move("right", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "right")
+        move_score["right"] = score
+
+
+    if not move_score:
+        print("failure, no possible moves, trying to go towards tail")
+        dir = 'left'
     else:
-        dir = random.choice(movedTried)
+        best_moves = util.minimums(move_score)
+        print("best moves are {}".format(best_moves))
+        dir = random.choice(best_moves)
     print(dir)
     return dir

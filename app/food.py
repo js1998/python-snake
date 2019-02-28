@@ -1,59 +1,66 @@
 import json
 import random
-from util import CalculateDistance, optimal_move, possible_move
+import util
 
 
 def directionToFood(food, you, occupied, height, width):
-    headPos = you[0]
+    head_pos = you[0]
+    move_score = {}
 
-    dir = 'left'
-    movedTried = []
-
-    if int(food["y"]) < int(headPos["y"]):
+    if int(food["y"]) < int(head_pos["y"]):
         print('f trying up')
-        if optimal_move("up", you, occupied, height, width):
+        if util.choose_move("up", you, occupied, height, width, spacing=2):
             return "up"
-    elif int(food["y"]) > int(headPos["y"]):
+
+    elif int(food["y"]) > int(head_pos["y"]):
         print('f trying down')
-        if optimal_move("down", you, occupied, height, width):
+        if util.choose_move("down", you, occupied, height, width, spacing=2):
             return "down"
 
-    if int(food["x"]) < int(headPos["x"]):
+    if int(food["x"]) < int(head_pos["x"]):
         print('f trying left')
-        if optimal_move("left", you, occupied, height, width):
+        if util.choose_move("left", you, occupied, height, width, spacing=2):
             return "left"
-    elif int(food["x"]) > int(headPos["x"]):
+
+    elif int(food["x"]) > int(head_pos["x"]):
         print('f trying right')
-        if optimal_move("right", you, occupied, height, width):
+        if util.choose_move("right", you, occupied, height, width, spacing=2):
             return "right"
 
     print('f I ended up in moveTried')
-    if "up" not in movedTried and possible_move("up", you, occupied, height, width):
-        movedTried.append("up")
+    if util.choose_move("up", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "up")
+        move_score["up"] = score
         # return "up"
-    if "down" not in movedTried and possible_move("down", you, occupied, height, width):
-        movedTried.append("down")
+    if util.choose_move("down", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "down")
+        move_score["down"] = score
         # return "down"
-    if "left" not in movedTried and possible_move("left", you, occupied, height, width):
-        movedTried.append("left")
+    if util.choose_move("left", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "left")
+        move_score["left"] = score
         # return "left"
-    if "right" not in movedTried and possible_move("right", you, occupied, height, width):
-        movedTried.append("right")
+    if util.choose_move("right", you, occupied, height, width):
+        score = util.corner_check(head_pos, occupied, "right")
+        move_score["right"] = score
         # return "right"
-    if not movedTried:
+    if not move_score:
+        print("failure, no possible moves, trying to go towards tail")
         dir = 'left'
     else:
-        dir = random.choice(movedTried)
+        best_moves = util.minimums(move_score)
+        print("best moves are {}".format(best_moves))
+        dir = random.choice(best_moves)
     print(dir)
     return dir
 
 
 def getClosestFood(foods, headPos):
-    closest_distance = CalculateDistance(foods[0], headPos)
+    closest_distance = util.CalculateDistance(foods[0], headPos)
     closest_food = foods[0]
 
     for food in foods:
-        new_distance = CalculateDistance(food, headPos)
+        new_distance = util.CalculateDistance(food, headPos)
         if closest_distance > new_distance:
             closest_distance = new_distance
             closest_food = food
