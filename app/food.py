@@ -5,50 +5,61 @@ import util
 
 def direction_to_food(food, you, occupied, height, width):
     head_pos = you[0]
-    move_score = {}
+    optimal_move_score = {}
+    possible_move_score = {}
 
     if int(food["y"]) < int(head_pos["y"]):
         print('f trying up')
         if util.is_possible_move("up", you, occupied, height, width, spacing=2):
-            return "up"
+            score = util.corner_check(head_pos, occupied, "up")
+            optimal_move_score['up'] = score
 
     elif int(food["y"]) > int(head_pos["y"]):
         print('f trying down')
         if util.is_possible_move("down", you, occupied, height, width, spacing=2):
-            return "down"
+            score = util.corner_check(head_pos, occupied, "down")
+            optimal_move_score['down'] = score
 
     if int(food["x"]) < int(head_pos["x"]):
         print('f trying left')
         if util.is_possible_move("left", you, occupied, height, width, spacing=2):
-            return "left"
+            score = util.corner_check(head_pos, occupied, "left")
+            optimal_move_score['left'] = score
 
     elif int(food["x"]) > int(head_pos["x"]):
         print('f trying right')
         if util.is_possible_move("right", you, occupied, height, width, spacing=2):
-            return "right"
+            score = util.corner_check(head_pos, occupied, "right")
+            optimal_move_score['right'] = score
+
+    if optimal_move_score:
+        best_moves = util.minimums(optimal_move_score)
+        print("best moves are {}".format(best_moves))
+        move = random.choice(best_moves)
+        return move
 
     print('f I ended up in moveTried')
     if util.is_possible_move("up", you, occupied, height, width):
         score = util.corner_check(head_pos, occupied, "up")
-        move_score["up"] = score
-        # return "up"
+        possible_move_score["up"] = score
+
     if util.is_possible_move("down", you, occupied, height, width):
         score = util.corner_check(head_pos, occupied, "down")
-        move_score["down"] = score
-        # return "down"
+        possible_move_score["down"] = score
+
     if util.is_possible_move("left", you, occupied, height, width):
         score = util.corner_check(head_pos, occupied, "left")
-        move_score["left"] = score
-        # return "left"
+        possible_move_score["left"] = score
+
     if util.is_possible_move("right", you, occupied, height, width):
         score = util.corner_check(head_pos, occupied, "right")
-        move_score["right"] = score
-        # return "right"
-    if not move_score:
+        possible_move_score["right"] = score
+
+    if not possible_move_score:
         print("failure, no possible moves, trying to go towards tail")
         move = 'left'
     else:
-        best_moves = util.minimums(move_score)
+        best_moves = util.minimums(possible_move_score)
         print("best moves are {}".format(best_moves))
         move = random.choice(best_moves)
     print(move)
