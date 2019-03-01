@@ -1,6 +1,4 @@
-
 def calculate_direction(dest, headPos):
-
     dest_x = dest["x"]
     dest_y = dest["y"]
 
@@ -10,7 +8,7 @@ def calculate_direction(dest, headPos):
     return abs(dest_x - headpos_x) + abs(dest_y - headpos_y)
 
 
-def corner_check(head, occupied, direction):
+def score_move(head, occupied, direction, width=0, height=0):
     """ Gives a score for a given direction based on on how many corners are occupied around that direction
 
     :param head: x and y coordinate of head
@@ -24,32 +22,82 @@ def corner_check(head, occupied, direction):
 
     :return: int of how many corners occupied
     """
-    count = 0
 
-    if direction == 'left':
-        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
-            count += 1
-        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
-            count += 1
+    def is_snake(start, finish, facing):
+        count = 0
+        if facing == 'left':
+            if any((loc["x"] == start["x"] - 2) or  # two spaces ahead
+                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 1)) or  # close top right
+                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 2)) or  # far top right
+                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 1)) or  # close top left
+                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 2))  # far top left
+                   for loc in finish):
+                count += 1
 
-    elif direction == 'right':
-        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
-            count += 1
-        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
-            count += 1
+        elif facing == 'right':
+            if any((loc["x"] == start["x"] + 2) or  # two spaces ahead
+                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 1)) or  # close top right
+                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 2)) or  # far top right
+                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 1)) or  # close top left
+                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 2))  # far top left
+                   for loc in finish):
+                count += 1
 
-    elif direction == 'up':
-        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
-            count += 1
-        if any(loc["y"] == (head["y"] - 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
-            count += 1
+        elif facing == 'down':
+            if any((loc["y"] == start["y"] + 2) or  # two spaces ahead
+                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 1)) or  # close top right
+                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 2)) or  # far top right
+                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 1)) or  # close top left
+                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 2))  # far top left
+                   for loc in finish):
+                count += 1
 
-    elif direction == 'down':
-        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] - 1) for loc in occupied):
-            count += 1
-        if any(loc["y"] == (head["y"] + 1) and loc["x"] == (head["x"] + 1) for loc in occupied):
-            count += 1
-    return count
+        elif facing == 'up':
+            if any((loc["y"] == start["y"] - 2) or  # two spaces ahead
+                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 1)) or  # close top right
+                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 2)) or  # far top right
+                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 1)) or  # close top left
+                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 2))  # far top left
+                   for loc in finish):
+                count += 1
+        return count
+
+    def is_out(start, facing, x_boundary, y_boundary):
+        if facing == 'left':
+            if (start["x"] - 2) <= -1:
+                return 1
+            elif (start["x"] - 1) <= -1:
+                return 2
+
+        elif facing == "right":
+            if (start["x"] + 2) >= y_boundary:
+                return 1
+            if (start["x"] + 1) >= y_boundary:
+                return 2
+
+        elif facing == 'up':
+            if (start["y"] - 2) <= -1:
+                return 1
+            elif (start["y"] - 1) <= -1:
+                return 2
+
+        elif facing == 'down':
+            if (start["y"] + 1) >= x_boundary:
+                return 1
+            if (start["y"] + 1) >= x_boundary:
+                return 2
+        return 0
+
+    snake_score = is_snake(start=head,
+                           finish=occupied,
+                           facing=direction)
+
+    out_score = is_out(start=head,
+                       facing=direction,
+                       x_boundary=width,
+                       y_boundary=height)
+
+    return snake_score + out_score
 
 
 def minimums(some_dict):
@@ -59,15 +107,15 @@ def minimums(some_dict):
     :return: list with all keys that had the minimum value
     """
 
-    positions = []
+    positions = {}
     min_value = float("inf")
     for k, v in some_dict.items():
         if v == min_value:
-            positions.append(k)
+            positions[k] = v
         if v < min_value:
             min_value = v
-            del positions[:]
-            positions.append(k)
+            positions.clear()
+            positions[k] = v
 
     return positions
 
@@ -79,10 +127,10 @@ def is_possible_move(direction, you, occupied, height, width, spacing=1):
     :type direction: str
 
     :param you: all blocks our body is occupying
-    :type you: list
+    :type you: list of dict
 
     :param occupied: all blocks all snakes are occupying
-    :type occupied: list
+    :type occupied: list of dict
 
     :param height: height of the board
     :type height: int
@@ -125,3 +173,36 @@ def is_possible_move(direction, you, occupied, height, width, spacing=1):
 
     return True
 
+
+def check_lane(head, occupied, direction, width, height):
+    lane_def = []
+    i = 0
+
+    if direction == 'left':
+        while head["x"] != -1:
+            lane_def.append({"y": head["y"] + 1, "x": head["x"] - i})
+            lane_def.append({"y": head["y"] - 1, "x": head["x"] - i})
+            i -= 1
+
+    elif direction == 'right':
+        while head["x"] != width:
+            lane_def.append({"y": head["y"] + 1, "x": head["x"] + i})
+            lane_def.append({"y": head["y"] - 1, "x": head["x"] + i})
+            i += 1
+
+    elif direction == 'up':
+        while head["y"] != -1:
+            lane_def.append({"y": head["y"] - i, "x": head["x"] + 1})
+            lane_def.append({"y": head["y"] - i, "x": head["x"] - 1})
+            i -= 1
+
+    elif direction == 'down':
+        while head["y"] != height:
+            lane_def.append({"y": head["y"] + i, "x": head["x"] + 1})
+            lane_def.append({"y": head["y"] + i, "x": head["x"] - 1})
+            i += 1
+
+    if all(lane_def) in occupied:
+        return True
+
+    return False

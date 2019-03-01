@@ -14,48 +14,48 @@ def find_tail(you, occupied, width, height):
     if head_pos['y'] < tail_pos['y']:
         print('s trying down')
         if util.is_possible_move('down', you, occupied, width, height, spacing=2):
-            score = util.corner_check(head_pos, occupied, "down")
+            score = util.score_move(head_pos, occupied, "down")
             optimal_move_score['down'] = score
 
     if head_pos['y'] > tail_pos['y']:
         print('s trying up')
         if util.is_possible_move('up', you, occupied, width, height, spacing=2):
-            score = util.corner_check(head_pos, occupied, "up")
+            score = util.score_move(head_pos, occupied, "up")
             optimal_move_score['up'] = score
 
     if head_pos['x'] < tail_pos['x']:
         print('s trying right')
         if util.is_possible_move('right', you, occupied, width, height, spacing=2):
-            score = util.corner_check(head_pos, occupied, "right")
+            score = util.score_move(head_pos, occupied, "right")
             optimal_move_score['right'] = score
 
     if head_pos['x'] > tail_pos['x']:
         print('s trying left')
         if util.is_possible_move('left', you, occupied, width, height, spacing=2):
-            score = util.corner_check(head_pos, occupied, "left")
+            score = util.score_move(head_pos, occupied, "left")
             optimal_move_score['left'] = score
 
     if optimal_move_score:
         best_moves = util.minimums(optimal_move_score)
-        print("best moves are {}".format(best_moves))
-        move = random.choice(best_moves)
+        print("best moves are {} with scores {}".format(best_moves.keys(), best_moves.values()))
+        move = random.choice(best_moves.keys())
         return move
 
     print('f I ended up in moveTried')
     if util.is_possible_move("up", you, occupied, height, width):
-        score = util.corner_check(head_pos, occupied, "up")
+        score = util.score_move(head_pos, occupied, "up")
         possible_move_score["up"] = score
 
     if util.is_possible_move("down", you, occupied, height, width):
-        score = util.corner_check(head_pos, occupied, "down")
+        score = util.score_move(head_pos, occupied, "down")
         possible_move_score["down"] = score
 
     if util.is_possible_move("left", you, occupied, height, width):
-        score = util.corner_check(head_pos, occupied, "left")
+        score = util.score_move(head_pos, occupied, "left")
         possible_move_score["left"] = score
 
     if util.is_possible_move("right", you, occupied, height, width):
-        score = util.corner_check(head_pos, occupied, "right")
+        score = util.score_move(head_pos, occupied, "right")
         possible_move_score["right"] = score
 
     if not possible_move_score:
@@ -63,7 +63,7 @@ def find_tail(you, occupied, width, height):
         move = 'left'
     else:
         best_moves = util.minimums(possible_move_score)
-        print("best moves are {}".format(best_moves))
-        move = random.choice(best_moves)
+        print("best moves are {} with scores {}".format(best_moves.keys(), best_moves.values()))
+        move = random.choice(best_moves.keys())
     print(move)
     return move

@@ -16,6 +16,7 @@ def calculate_direction(data):
     for snake in snakes:
         body_pos.extend(snake['body'])
 
+
     print("turn number {}".format(data["turn"]))
 
     # Dying so go get food
