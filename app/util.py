@@ -26,40 +26,44 @@ def score_move(head, occupied, direction, width=0, height=0):
     def is_snake(start, finish, facing):
         count = 0
         if facing == 'left':
-            if any((loc["x"] == start["x"] - 2 and loc["y"] == start["y"]) or  # two spaces ahead
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 1)) or  # close top right
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 2)) or  # far top right
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 1)) or  # close top left
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["x"] == start["x"] - 2 and loc["y"] == start["y"]),  # two spaces ahead
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 1)),  # close top right
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 2)),  # far top right
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 1)),  # close top left
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 2))
+                        ]):  # far top left
+                    count += 1
 
         elif facing == 'right':
-            if any((loc["x"] == start["x"] + 2 and loc["y"] == start["y"]) or  # two spaces ahead
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 1)) or  # close top right
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 2)) or  # far top right
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 1)) or  # close top left
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["x"] == start["x"] + 2 and loc["y"] == start["y"]),  # two spaces ahead
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 1)),  # close top right
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 2)),  # far top right
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 1)),  # close top left
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 2))  # far top left
+                        ]):
+                    count += 1
 
         elif facing == 'down':
-            if any((loc["y"] == start["y"] + 2 and loc["x"] == start["x"]) or  # two spaces ahead
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 1)) or  # close top right
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 2)) or  # far top right
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 1)) or  # close top left
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["y"] == start["y"] + 2 and loc["x"] == start["x"]),  # two spaces ahead
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 1)),  # close top right
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 2)),  # far top right
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 1)),  # close top left
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 2))  # far top left
+                        ]):
+                    count += 1
 
         elif facing == 'up':
-            if any((loc["y"] == start["y"] - 2 and loc["x"] == start["x"]) or  # two spaces ahead
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 1)) or  # close top right
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 2)) or  # far top right
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 1)) or  # close top left
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["y"] == start["y"] - 2 and loc["x"] == start["x"]),  # two spaces ahead
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 1)),  # close top right
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 2)),  # far top right
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 1)),  # close top left
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 2))  # far top left
+                        ]):
+                    count += 1
         return count
 
     def is_out(start, facing, x_boundary, y_boundary):
@@ -70,9 +74,9 @@ def score_move(head, occupied, direction, width=0, height=0):
                 return 2
 
         elif facing == "right":
-            if (start["x"] + 2) >= y_boundary:
+            if (start["x"] + 2) >= x_boundary:
                 return 1
-            if (start["x"] + 1) >= y_boundary:
+            if (start["x"] + 1) >= x_boundary:
                 return 2
 
         elif facing == 'up':
@@ -82,9 +86,9 @@ def score_move(head, occupied, direction, width=0, height=0):
                 return 2
 
         elif facing == 'down':
-            if (start["y"] + 1) >= x_boundary:
+            if (start["y"] + 2) >= y_boundary:
                 return 1
-            if (start["y"] + 1) >= x_boundary:
+            if (start["y"] + 1) >= y_boundary:
                 return 2
         return 0
 
@@ -96,6 +100,8 @@ def score_move(head, occupied, direction, width=0, height=0):
                        facing=direction,
                        x_boundary=width,
                        y_boundary=height)
+
+    print ("snake: {}, out: {}".format(snake_score, out_score))
 
     return snake_score + out_score
 
@@ -174,7 +180,6 @@ def is_possible_move(direction, you, occupied, height, width, spacing=1):
     return True
 
 
-
 def possible_move(direction, you, occupied, height, width):
     head_pos = you[0]
 
@@ -191,26 +196,27 @@ def possible_move(direction, you, occupied, height, width):
         dist_x = taken_x - head_pos_x
 
         if direction == "up":
-            if (abs(dist_y)==1 and taken_y < head_pos_y and head_pos_x == taken_x) or head_pos_y == 0:
+            if (abs(dist_y) == 1 and taken_y < head_pos_y and head_pos_x == taken_x) or head_pos_y == 0:
                 return False
         if direction == "down":
-            if (abs(dist_y)==1 and taken_y > head_pos_y and head_pos_x == taken_x) or head_pos_y == height - 1:
+            if (abs(dist_y) == 1 and taken_y > head_pos_y and head_pos_x == taken_x) or head_pos_y == height - 1:
                 return False
         if direction == "right":
-            if (abs(dist_x)==1 and taken_x > head_pos_x and head_pos_y == taken_y) or head_pos_x == width - 1:
+            if (abs(dist_x) == 1 and taken_x > head_pos_x and head_pos_y == taken_y) or head_pos_x == width - 1:
                 return False
         if direction == "left":
-            if (abs(dist_x)==1 and taken_x < head_pos_x and head_pos_y == taken_y) or head_pos["x"] == 0:
+            if (abs(dist_x) == 1 and taken_x < head_pos_x and head_pos_y == taken_y) or head_pos["x"] == 0:
                 return False
 
         i = i + 1
 
     return True
 
+
 def detect_box(direction, body_parts):
     head_pos = body_parts[0]
 
-    #TODO: check for walls, other directions, and threshhold for box
+    # TODO: check for walls, other directions, and threshhold for box
 
     if direction == "up":
         y_val = head_pos["y"] - 1
@@ -315,4 +321,3 @@ def check_lane(head, occupied, direction, width, height):
     return False
 
     # return True
-
