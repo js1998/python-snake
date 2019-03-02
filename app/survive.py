@@ -10,25 +10,25 @@ def find_tail(you, occupied, snake_heads, width, height):
     optimal_move_score = {}
     possible_move_score = {}
 
-    if head_pos['y'] < tail_pos['y']:
+    if head_pos['y'] < tail_pos['y'] and not util.check_lane(head_pos, occupied, "down", width, height):
         print('s trying down')
         if util.is_possible_move('down', you,snake_heads, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "down")
             optimal_move_score['down'] = score
 
-    if head_pos['y'] > tail_pos['y']:
+    if head_pos['y'] > tail_pos['y'] and not util.check_lane(head_pos, occupied, "up", width, height):
         print('s trying up')
         if util.is_possible_move('up', you,snake_heads, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "up")
             optimal_move_score['up'] = score
 
-    if head_pos['x'] < tail_pos['x']:
+    if head_pos['x'] < tail_pos['x'] and not util.check_lane(head_pos, occupied, "right", width, height):
         print('s trying right')
         if util.is_possible_move('right', you, snake_heads, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "right")
             optimal_move_score['right'] = score
 
-    if head_pos['x'] > tail_pos['x']:
+    if head_pos['x'] > tail_pos['x'] and not util.check_lane(head_pos, occupied, "left", width, height):
         print('s trying left')
         if util.is_possible_move('left', you, snake_heads, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "left")
