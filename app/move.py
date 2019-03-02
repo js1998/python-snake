@@ -42,7 +42,7 @@ def find_next_direction(occupied, body_pos, snake_heads, width, height, dest):
 
     if open_list is [] and not point_in_list(closed_list, dest):
         #at this point, we're trapped and have died
-        return None
+        return "left"
 
     #iterate over closed_list then return direction to go
     return direction_to_go(closed_list, head_pos)
