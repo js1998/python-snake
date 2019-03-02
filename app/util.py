@@ -120,7 +120,7 @@ def minimums(some_dict):
     return positions
 
 
-def is_possible_move(direction, you, occupied, height, width, spacing=1):
+def is_possible_move(direction, you, snake_heads, occupied, height, width, spacing=1):
     """
 
     :param direction: up down left or right
@@ -157,16 +157,16 @@ def is_possible_move(direction, you, occupied, height, width, spacing=1):
         dist_x = taken_x - headpos_x
 
         if direction == "up":
-            if (abs(dist_y) <= spacing and taken_y < headpos_y and headpos_x == taken_x) or headpos_y == 0:
+            if (abs(dist_y) <= spacing and taken_y < headpos_y and headpos_x == taken_x) or headpos_y == 0 or possible_head_collision("up", head_pos, snake_heads):
                 return False
         if direction == "down":
-            if (abs(dist_y) <= spacing and taken_y > headpos_y and headpos_x == taken_x) or headpos_y == height - 1:
+            if (abs(dist_y) <= spacing and taken_y > headpos_y and headpos_x == taken_x) or headpos_y == height - 1 or possible_head_collision("down", head_pos, snake_heads):
                 return False
         if direction == "right":
-            if (abs(dist_x) <= spacing and taken_x > headpos_x and headpos_y == taken_y) or headpos_x == width - 1:
+            if (abs(dist_x) <= spacing and taken_x > headpos_x and headpos_y == taken_y) or headpos_x == width - 1 or possible_head_collision("right", head_pos, snake_heads):
                 return False
         if direction == "left":
-            if (abs(dist_x) <= spacing and taken_x < headpos_x and headpos_y == taken_y) or headpos_x == 0:
+            if (abs(dist_x) <= spacing and taken_x < headpos_x and headpos_y == taken_y) or headpos_x == 0 or possible_head_collision("left", head_pos, snake_heads):
                 return False
 
         i = i + 1
@@ -174,38 +174,28 @@ def is_possible_move(direction, you, occupied, height, width, spacing=1):
     return True
 
 
+def possible_head_collision(direction, our_head, snake_heads):
+    if direction == "up":
+        for head in snake_heads:
+            if (our_head["y"] - 2 == head["y"] and our_head["x"] == head["x"]) or (our_head["y"] - 1 == head["y"] and (our_head["x"] == head["x"] - 1 or our_head["x"] == head["x"] - 1)):
+                return True
 
-def possible_move(direction, you, occupied, height, width):
-    head_pos = you[0]
+    if direction == "down":
+        for head in snake_heads:
+            if (our_head["y"] + 2 == head["y"] and our_head["x"] == head["x"]) or (our_head["y"] - 1 == head["y"] and (our_head["x"] == head["x"] + 1 or our_head["x"] == head["x"] - 1)):
+                return True
 
-    i = 1
-    while i < len(occupied):
+    if direction == "left":
+        for head in snake_heads:
+            if (our_head["x"] - 2 == head["x"] and our_head["y"] == head["y"]) or (our_head["x"] + 1 == head["x"] and (our_head["y"] == head["y"] - 1 or our_head["y"] == head["y"] - 1)):
+                return True
 
-        head_pos_x = head_pos["x"]
-        head_pos_y = head_pos["y"]
+    if direction == "right":
+        for head in snake_heads:
+            if (our_head["x"] + 2 == head["x"] and our_head["y"] == head["y"]) or (our_head["x"] - 1 == head["x"] and (our_head["y"] == head["y"] + 1 or our_head["y"] == head["y"] - 1)):
+                return True
 
-        taken_x = occupied[i]["x"]
-        taken_y = occupied[i]["y"]
-
-        dist_y = taken_y - head_pos_y
-        dist_x = taken_x - head_pos_x
-
-        if direction == "up":
-            if (abs(dist_y)==1 and taken_y < head_pos_y and head_pos_x == taken_x) or head_pos_y == 0:
-                return False
-        if direction == "down":
-            if (abs(dist_y)==1 and taken_y > head_pos_y and head_pos_x == taken_x) or head_pos_y == height - 1:
-                return False
-        if direction == "right":
-            if (abs(dist_x)==1 and taken_x > head_pos_x and head_pos_y == taken_y) or head_pos_x == width - 1:
-                return False
-        if direction == "left":
-            if (abs(dist_x)==1 and taken_x < head_pos_x and head_pos_y == taken_y) or head_pos["x"] == 0:
-                return False
-
-        i = i + 1
-
-    return True
+    return False
 
 def detect_box(direction, body_parts):
     head_pos = body_parts[0]
