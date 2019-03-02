@@ -74,3 +74,79 @@ def possible_move(direction, you, occupied, height, width):
         i = i + 1
 
     return True
+
+def detect_box(direction, body_parts):
+    head_pos = body_parts[0]
+
+    #TODO: check for walls, other directions, and threshhold for box
+
+    if direction == "up":
+        y_val = head_pos["y"] - 1
+
+        total_count = 1
+        for part in body_parts:
+            if part["y"] == y_val:
+                total_count = total_count + 1
+
+        if total_count >= 2:
+            return True
+
+    if direction == "down":
+        y_val = head_pos["y"] + 1
+
+        total_count = 1
+        for part in body_parts:
+            if part["y"] == y_val:
+                total_count = total_count + 1
+
+        if total_count >= 2:
+            return True
+
+    if direction == "right":
+        x_val = head_pos["x"] + 1
+
+        total_count = 1
+        for part in body_parts:
+            if part["x"] == x_val:
+                total_count = total_count + 1
+
+        if total_count >= 2:
+            return True
+
+    if direction == "left":
+        x_val = head_pos["x"] - 1
+
+        total_count = 1
+        for part in body_parts:
+            if part["x"] == x_val:
+                total_count = total_count + 1
+
+        if total_count >= 2:
+            return True
+
+    return False
+
+
+# def trap_detection(direction, bodyPositions, visited, height, width, dest_x, dest_y):
+#     x = bodyPositions["x"]
+#     y = bodyPositions["y"]
+#
+#     if x == dest_x and y == dest_y:
+#         return True
+#     if x >= width or y > height:
+#         return False
+#     if x < 0 or y < 0:
+#         return False
+#     if visited[x][y]:
+#         return False
+#     # if curr_x and curr_y not body Position, return false
+#     visited[x][y] = True
+#     if (trap_detection(x + 1, y, visited, n, m, mat, dest_x, dest_y)):
+#         return True
+#     if (trap_detection(x - 1, y, visited, n, m, mat, dest_x, dest_y)):
+#         return True
+#     if (trap_detection(x, y + 1, visited, n, m, mat, dest_x, dest_y)):
+#         return True
+#     if (trap_detection(x, y - 1, visited, n, m, mat, dest_x, dest_y)):
+#         return True
+#     return False
