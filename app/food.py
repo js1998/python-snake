@@ -2,8 +2,6 @@ import json
 import random
 import util
 
-
-
 def direction_to_food(food, you, occupied, height, width):
     head_pos = you[0]
     optimal_move_score = {}

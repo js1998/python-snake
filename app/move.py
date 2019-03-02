@@ -1,8 +1,7 @@
 import math
-from util import possible_move, calculate_direction
+from util import is_possible_move
 
-
-def find_next_direction(occupied, body_pos, width, height, dest):
+def find_next_direction(occupied, body_pos, snake_heads, width, height, dest):
 
     closed_list = []
     open_list = []
@@ -26,19 +25,19 @@ def find_next_direction(occupied, body_pos, width, height, dest):
 
         # check 4 direction to children
         up_point = {"x": head_pos["x"], "y": head_pos["y"] - 1}
-        if possible_move("up", body_pos, occupied, height, width) and not point_in_list(closed_list, up_point)[0]:
+        if is_possible_move("up", body_pos, snake_heads, occupied, height, width) and not point_in_list(closed_list, up_point)[0]:
             open_list = find_path(open_list, curr_node, up_point, dest)
 
         down_point = {"x": head_pos["x"], "y": head_pos["y"] + 1}
-        if possible_move("down", body_pos, occupied, height, width) and not point_in_list(closed_list, down_point)[0]:
+        if is_possible_move("down", body_pos, snake_heads, occupied, height, width) and not point_in_list(closed_list, down_point)[0]:
             open_list = find_path(open_list, curr_node, down_point, dest)
 
         right_point = {"x": head_pos["x"] + 1, "y": head_pos["y"]}
-        if possible_move("right", body_pos, occupied, height, width) and not point_in_list(closed_list, right_point)[0]:
+        if is_possible_move("right", body_pos, snake_heads, occupied, height, width) and not point_in_list(closed_list, right_point)[0]:
             open_list = find_path(open_list, curr_node, right_point, dest)
 
         left_point = {"x": head_pos["x"] - 1, "y": head_pos["y"]}
-        if possible_move("left", body_pos, occupied, height, width) and not point_in_list(closed_list, left_point)[0]:
+        if is_possible_move("left", body_pos, snake_heads, occupied, height, width) and not point_in_list(closed_list, left_point)[0]:
             open_list = find_path(open_list, curr_node, left_point, dest)
 
     if open_list is [] and not point_in_list(closed_list, dest):
@@ -136,14 +135,3 @@ def calculate_h_score(start, dest):
     return math.pow(start["x"] - dest["x"], 2) + math.pow(start["y"] - dest["y"], 2)
 
 
-def get_closest_food(foods, headPos):
-    closest_distance = calculate_direction(foods[0], headPos)
-    closest_food = foods[0]
-
-    for food in foods:
-        new_distance = calculate_direction(food, headPos)
-        if closest_distance > new_distance:
-            closest_distance = new_distance
-            closest_food = food
-
-    return closest_food

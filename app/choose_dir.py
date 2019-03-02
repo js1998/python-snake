@@ -13,17 +13,19 @@ def calculate_direction(data):
     you = data["you"]["body"]
 
     body_pos = []
+    snake_heads = []
     snakes = data["board"]["snakes"]
     for snake in snakes:
+        snake_heads.append(snake["body"][0])
         body_pos.extend(snake['body'])
+    
     tail = you[-1]
     if tail in body_pos:
-        body_pos.remove(tail)
+        body_pos.remove(tail
 
     print("turn number {}".format(data["turn"]))
 
     #Dying so go get food
-
     if health < 75 or len(you) < 7:
         nearest_food = move.get_closest_food(foods, you[0])
         #TODO: pass all foods instead for fallback in case nearest food is unreachable
@@ -38,3 +40,4 @@ def calculate_direction(data):
     # Chase tail to stall out
     else:
         return survive.find_tail(you, body_pos, width, height)
+
