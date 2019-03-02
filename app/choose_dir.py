@@ -24,7 +24,7 @@ def calculate_direction(data):
 
     #Dying so go get food
 
-    if health < 50 or len(you) < 7:
+    if health < 75 or len(you) < 7:
         nearest_food = move.get_closest_food(foods, you[0])
         #TODO: pass all foods instead for fallback in case nearest food is unreachable
         print("headloc({} {}) + foodloc({} {})".format(body_pos[0]['x'], body_pos[0]['y'], nearest_food['x'], nearest_food['y']))
