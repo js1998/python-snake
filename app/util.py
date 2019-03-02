@@ -26,7 +26,7 @@ def score_move(head, occupied, direction, width=0, height=0):
     def is_snake(start, finish, facing):
         count = 0
         if facing == 'left':
-            if any((loc["x"] == start["x"] - 2) or  # two spaces ahead
+            if any((loc["x"] == start["x"] - 2 and loc["y"] == start["y"]) or  # two spaces ahead
                    (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 1)) or  # close top right
                    (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 2)) or  # far top right
                    (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 1)) or  # close top left
@@ -35,7 +35,7 @@ def score_move(head, occupied, direction, width=0, height=0):
                 count += 1
 
         elif facing == 'right':
-            if any((loc["x"] == start["x"] + 2) or  # two spaces ahead
+            if any((loc["x"] == start["x"] + 2 and loc["y"] == start["y"]) or  # two spaces ahead
                    (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 1)) or  # close top right
                    (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 2)) or  # far top right
                    (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 1)) or  # close top left
@@ -44,7 +44,7 @@ def score_move(head, occupied, direction, width=0, height=0):
                 count += 1
 
         elif facing == 'down':
-            if any((loc["y"] == start["y"] + 2) or  # two spaces ahead
+            if any((loc["y"] == start["y"] + 2 and loc["x"] == start["x"]) or  # two spaces ahead
                    (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 1)) or  # close top right
                    (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 2)) or  # far top right
                    (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 1)) or  # close top left
@@ -53,7 +53,7 @@ def score_move(head, occupied, direction, width=0, height=0):
                 count += 1
 
         elif facing == 'up':
-            if any((loc["y"] == start["y"] - 2) or  # two spaces ahead
+            if any((loc["y"] == start["y"] - 2 and loc["x"] == start["x"]) or  # two spaces ahead
                    (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 1)) or  # close top right
                    (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 2)) or  # far top right
                    (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 1)) or  # close top left
@@ -138,7 +138,7 @@ def is_possible_move(direction, you, occupied, height, width, spacing=1):
     :param width: width of the board
     :type width: int
 
-    :param spacing: how many spaces directly in front of you to look ahead
+        :param spacing: how many spaces directly in front of you to look ahead
     :type spacing: int
     :return: boolean
 
@@ -175,34 +175,34 @@ def is_possible_move(direction, you, occupied, height, width, spacing=1):
 
 
 def check_lane(head, occupied, direction, width, height):
-    lane_def = []
-    i = 0
-
-    if direction == 'left':
-        while head["x"] != -1:
-            lane_def.append({"y": head["y"] + 1, "x": head["x"] - i})
-            lane_def.append({"y": head["y"] - 1, "x": head["x"] - i})
-            i -= 1
-
-    elif direction == 'right':
-        while head["x"] != width:
-            lane_def.append({"y": head["y"] + 1, "x": head["x"] + i})
-            lane_def.append({"y": head["y"] - 1, "x": head["x"] + i})
-            i += 1
-
-    elif direction == 'up':
-        while head["y"] != -1:
-            lane_def.append({"y": head["y"] - i, "x": head["x"] + 1})
-            lane_def.append({"y": head["y"] - i, "x": head["x"] - 1})
-            i -= 1
-
-    elif direction == 'down':
-        while head["y"] != height:
-            lane_def.append({"y": head["y"] + i, "x": head["x"] + 1})
-            lane_def.append({"y": head["y"] + i, "x": head["x"] - 1})
-            i += 1
-
-    if all(lane_def) in occupied:
-        return True
-
+    # lane_def = []
+    # i = 0
+    #
+    # if direction == 'left':
+    #     while head["x"] != -1:
+    #         lane_def.append({"y": head["y"] + 1, "x": head["x"] - i})
+    #         lane_def.append({"y": head["y"] - 1, "x": head["x"] - i})
+    #         i -= 1
+    #
+    # elif direction == 'right':
+    #     while head["x"] != width:
+    #         lane_def.append({"y": head["y"] + 1, "x": head["x"] + i})
+    #         lane_def.append({"y": head["y"] - 1, "x": head["x"] + i})
+    #         i += 1
+    #
+    # elif direction == 'up':
+    #     while head["y"] != -1:
+    #         lane_def.append({"y": head["y"] - i, "x": head["x"] + 1})
+    #         lane_def.append({"y": head["y"] - i, "x": head["x"] - 1})
+    #         i -= 1
+    #
+    # elif direction == 'down':
+    #     while head["y"] != height:
+    #         lane_def.append({"y": head["y"] + i, "x": head["x"] + 1})
+    #         lane_def.append({"y": head["y"] + i, "x": head["x"] - 1})
+    #         i += 1
+    #
+    # if all(lane_def) in occupied:
     return False
+
+    # return True

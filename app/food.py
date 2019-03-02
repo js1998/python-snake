@@ -8,25 +8,25 @@ def direction_to_food(food, you, occupied, height, width):
     optimal_move_score = {}
     possible_move_score = {}
 
-    if int(food["y"]) < int(head_pos["y"]):
+    if int(food["y"]) < int(head_pos["y"]) and not util.check_lane(head_pos, occupied, "up", width, height):
         print('f trying up')
         if util.is_possible_move("up", you, occupied, height, width, spacing=2):
             score = util.score_move(head_pos, occupied, "up")
             optimal_move_score['up'] = score
 
-    elif int(food["y"]) > int(head_pos["y"]):
+    elif int(food["y"]) > int(head_pos["y"]) and not util.check_lane(head_pos, occupied, "down", width, height):
         print('f trying down')
         if util.is_possible_move("down", you, occupied, height, width, spacing=2):
             score = util.score_move(head_pos, occupied, "down")
             optimal_move_score['down'] = score
 
-    if int(food["x"]) < int(head_pos["x"]):
+    if int(food["x"]) < int(head_pos["x"]) and not util.check_lane(head_pos, occupied, "left", width, height):
         print('f trying left')
         if util.is_possible_move("left", you, occupied, height, width, spacing=2):
             score = util.score_move(head_pos, occupied, "left")
             optimal_move_score['left'] = score
 
-    elif int(food["x"]) > int(head_pos["x"]):
+    elif int(food["x"]) > int(head_pos["x"]) and not util.check_lane(head_pos, occupied, "up", width, height):
         print('f trying right')
         if util.is_possible_move("right", you, occupied, height, width, spacing=2):
             score = util.score_move(head_pos, occupied, "right")

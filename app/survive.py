@@ -11,25 +11,25 @@ def find_tail(you, occupied, width, height):
     optimal_move_score = {}
     possible_move_score = {}
 
-    if head_pos['y'] < tail_pos['y']:
+    if head_pos['y'] < tail_pos['y'] and not util.check_lane(head_pos, occupied, "down", width, height):
         print('s trying down')
         if util.is_possible_move('down', you, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "down")
             optimal_move_score['down'] = score
 
-    if head_pos['y'] > tail_pos['y']:
+    if head_pos['y'] > tail_pos['y'] and not util.check_lane(head_pos, occupied, "up", width, height):
         print('s trying up')
         if util.is_possible_move('up', you, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "up")
             optimal_move_score['up'] = score
 
-    if head_pos['x'] < tail_pos['x']:
+    if head_pos['x'] < tail_pos['x'] and not util.check_lane(head_pos, occupied, "right", width, height):
         print('s trying right')
         if util.is_possible_move('right', you, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "right")
             optimal_move_score['right'] = score
 
-    if head_pos['x'] > tail_pos['x']:
+    if head_pos['x'] > tail_pos['x'] and not util.check_lane(head_pos, occupied, "left", width, height):
         print('s trying left')
         if util.is_possible_move('left', you, occupied, width, height, spacing=2):
             score = util.score_move(head_pos, occupied, "left")
@@ -41,7 +41,7 @@ def find_tail(you, occupied, width, height):
         move = random.choice(best_moves.keys())
         return move
 
-    print('f I ended up in moveTried')
+    print('s I ended up in moveTried')
     if util.is_possible_move("up", you, occupied, height, width):
         score = util.score_move(head_pos, occupied, "up")
         possible_move_score["up"] = score
