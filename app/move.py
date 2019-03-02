@@ -1,5 +1,6 @@
 import math
-from util import possible_move
+from util import possible_move, calculate_direction
+
 
 def find_next_direction(occupied, body_pos, width, height, dest):
 
@@ -135,3 +136,14 @@ def calculate_h_score(start, dest):
     return math.pow(start["x"] - dest["x"], 2) + math.pow(start["y"] - dest["y"], 2)
 
 
+def get_closest_food(foods, headPos):
+    closest_distance = calculate_direction(foods[0], headPos)
+    closest_food = foods[0]
+
+    for food in foods:
+        new_distance = calculate_direction(food, headPos)
+        if closest_distance > new_distance:
+            closest_distance = new_distance
+            closest_food = food
+
+    return closest_food
