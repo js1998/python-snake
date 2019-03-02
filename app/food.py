@@ -3,6 +3,7 @@ import random
 import util
 
 
+
 def direction_to_food(food, you, occupied, height, width):
     head_pos = you[0]
     optimal_move_score = {}
@@ -10,6 +11,7 @@ def direction_to_food(food, you, occupied, height, width):
 
     if int(food["y"]) < int(head_pos["y"]) and not util.check_lane(head_pos, occupied, "up", width, height):
         print('f trying up')
+
         if util.is_possible_move("up", you, occupied, height, width, spacing=2):
             score = util.score_move(head_pos, occupied, "up")
             optimal_move_score['up'] = score
@@ -22,6 +24,7 @@ def direction_to_food(food, you, occupied, height, width):
 
     if int(food["x"]) < int(head_pos["x"]) and not util.check_lane(head_pos, occupied, "left", width, height):
         print('f trying left')
+
         if util.is_possible_move("left", you, occupied, height, width, spacing=2):
             score = util.score_move(head_pos, occupied, "left")
             optimal_move_score['left'] = score
@@ -58,6 +61,7 @@ def direction_to_food(food, you, occupied, height, width):
     if not possible_move_score:
         print("failure, no possible moves, trying to go towards tail")
         move = 'left'
+
     else:
         best_moves = util.minimums(possible_move_score)
         print("best moves are {} with scores {}".format(best_moves.keys(), best_moves.values()))
