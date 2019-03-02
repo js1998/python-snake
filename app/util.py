@@ -68,28 +68,36 @@ def score_move(head, occupied, direction, width=0, height=0):
 
     def is_out(start, facing, x_boundary, y_boundary):
         if facing == 'left':
+            print("scoring left")
+            if (start["x"] - 1) <= -1:
+                return 2
             if (start["x"] - 2) <= -1:
                 return 1
-            elif (start["x"] - 1) <= -1:
-                return 2
+            return 0
 
         elif facing == "right":
-            if (start["x"] + 2) >= x_boundary:
-                return 1
-            if (start["x"] + 1) >= x_boundary:
+            print("scoring right")
+            if (start["x"] + 1) > x_boundary:
                 return 2
+            if (start["x"] + 2) > x_boundary:
+                return 1
+            return 0
 
         elif facing == 'up':
+            print("scoring up")
+            if (start["y"] - 1) <= -1:
+                return 2
             if (start["y"] - 2) <= -1:
                 return 1
-            elif (start["y"] - 1) <= -1:
-                return 2
+            return 0
 
         elif facing == 'down':
-            if (start["y"] + 2) >= y_boundary:
-                return 1
+            print("scoring down")
             if (start["y"] + 1) >= y_boundary:
                 return 2
+            if (start["y"] + 2) >= y_boundary:
+                return 1
+            return 0
         return 0
 
     snake_score = is_snake(start=head,
@@ -289,35 +297,43 @@ def detect_box(direction, body_parts):
 #         return True
 #     return False
 
-def check_lane(head, occupied, direction, width, height):
-    # lane_def = []
-    # i = 0
-    #
-    # if direction == 'left':
-    #     while head["x"] != -1:
-    #         lane_def.append({"y": head["y"] + 1, "x": head["x"] - i})
-    #         lane_def.append({"y": head["y"] - 1, "x": head["x"] - i})
-    #         i -= 1
-    #
-    # elif direction == 'right':
-    #     while head["x"] != width:
-    #         lane_def.append({"y": head["y"] + 1, "x": head["x"] + i})
-    #         lane_def.append({"y": head["y"] - 1, "x": head["x"] + i})
-    #         i += 1
-    #
-    # elif direction == 'up':
-    #     while head["y"] != -1:
-    #         lane_def.append({"y": head["y"] - i, "x": head["x"] + 1})
-    #         lane_def.append({"y": head["y"] - i, "x": head["x"] - 1})
-    #         i -= 1
-    #
-    # elif direction == 'down':
-    #     while head["y"] != height:
-    #         lane_def.append({"y": head["y"] + i, "x": head["x"] + 1})
-    #         lane_def.append({"y": head["y"] + i, "x": head["x"] - 1})
-    #         i += 1
-    #
-    # if all(lane_def) in occupied:
-    return False
+# def is_trap(head, occupied, direction, width, height):
+#     # lane_def = []
+#     # i = 0
+#     #
+#     # if direction == 'left':
+#     #     while head["x"] != -1 or head["x"] - i - 1 not in occupied:
+#     #         above = {}
+#     #
+#     #         above = {"y": (head["y"] + 1), "x": (head["x"] - i)}
+#     #         below = {"y": (head["y"] - 1), "x": (head["x"] - i)}
+#     #         lane_def.append(above)
+#     #         lane_def.append(below)
+#     #         i -= 1
+#     #
+#     # elif direction == 'right':
+#     #     while head["x"] != width or head["x"] + i + 1 not in occupied:
+#     #         above = {"y": (head["y"] + 1), "x": (head["x"] + i)}
+#     #         below = {"y": (head["y"] - 1), "x": (head["x"] + i)}
+#     #         lane_def.append(above)
+#     #         lane_def.append(below)
+#     #         i += 1
+#     #
+#     # elif direction == 'up':
+#     #     while head["y"] != -1 or head["y"] - i - 1 not in occupied:
+#     #         right = {"y": (head["y"] - i), "x": (head["x"] + 1)}
+#     #         left = {"y": (head["y"] - i), "x": (head["x"] - 1)}
+#     #         lane_def.append(right)
+#     #         lane_def.append(left)
+#     #         i -= 1
+#     #
+#     # elif direction == 'down':
+#     #     while head["y"] != height or head["y"] + i + 1 not in occupied:
+#     #         lane_def.append({"y": (head["y"] + i), "x": (head["x"] + 1)})
+#     #         lane_def.append({"y": (head["y"] + i), "x": (head["x"] - 1)})
+#     #         i += 1
+#     #
+#     # if all(lane_def) in occupied:
+#     return False
 
     # return True
