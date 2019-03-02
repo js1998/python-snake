@@ -157,16 +157,16 @@ def is_possible_move(direction, you, snake_heads, occupied, height, width, spaci
         dist_x = taken_x - headpos_x
 
         if direction == "up":
-            if (abs(dist_y) <= spacing and taken_y < headpos_y and headpos_x == taken_x) or headpos_y == 0 or possible_head_collision("up", head_pos, snake_heads):
+            if (abs(dist_y) <= spacing and taken_y < headpos_y and headpos_x == taken_x) or headpos_y == 0:# or possible_head_collision("up", head_pos, snake_heads):
                 return False
         if direction == "down":
-            if (abs(dist_y) <= spacing and taken_y > headpos_y and headpos_x == taken_x) or headpos_y == height - 1 or possible_head_collision("down", head_pos, snake_heads):
+            if (abs(dist_y) <= spacing and taken_y > headpos_y and headpos_x == taken_x) or headpos_y == height - 1:# or possible_head_collision("down", head_pos, snake_heads):
                 return False
         if direction == "right":
-            if (abs(dist_x) <= spacing and taken_x > headpos_x and headpos_y == taken_y) or headpos_x == width - 1 or possible_head_collision("right", head_pos, snake_heads):
+            if (abs(dist_x) <= spacing and taken_x > headpos_x and headpos_y == taken_y) or headpos_x == width - 1:# or possible_head_collision("right", head_pos, snake_heads):
                 return False
         if direction == "left":
-            if (abs(dist_x) <= spacing and taken_x < headpos_x and headpos_y == taken_y) or headpos_x == 0 or possible_head_collision("left", head_pos, snake_heads):
+            if (abs(dist_x) <= spacing and taken_x < headpos_x and headpos_y == taken_y) or headpos_x == 0:# or possible_head_collision("left", head_pos, snake_heads):
                 return False
 
         i = i + 1

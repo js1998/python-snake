@@ -29,7 +29,6 @@ def calculate_direction(data):
         print("headloc({} {}) + foodloc({} {})".format(body_pos[0]['x'], body_pos[0]['y'], nearest_food['x'], nearest_food['y']))
         return move.find_next_direction(body_pos, snake_heads ,you, height, width, nearest_food)
 
-
     # Chase tail to stall out
     else:
         return survive.find_tail(you=you,
