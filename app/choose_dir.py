@@ -13,10 +13,11 @@ def calculate_direction(data):
     you = data["you"]["body"]
 
     body_pos = []
+    snake_heads = []
     snakes = data["board"]["snakes"]
     for snake in snakes:
         body_pos.extend(snake['body'])
-
+        snake_heads.append(snake["body"][0])
 
     print("turn number {}".format(data["turn"]))
 
@@ -26,7 +27,6 @@ def calculate_direction(data):
         #TODO: pass all foods instead for fallback in case nearest food is unreachable
         print("headloc({} {}) + foodloc({} {})".format(body_pos[0]['x'], body_pos[0]['y'], nearest_food['x'], nearest_food['y']))
         return move.find_next_direction(body_pos, you, height, width, nearest_food)
-
 
     # Chase tail to stall out
     else:
