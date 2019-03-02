@@ -2,7 +2,8 @@ import food
 import survive
 import move
 
-def calculateDirection(data):
+
+def calculate_direction(data):
     foods = data["board"]["food"]
 
     height = data["board"]["height"]
@@ -16,6 +17,7 @@ def calculateDirection(data):
     for snake in snakes:
         body_pos.extend(snake['body'])
 
+
     print("turn number {}".format(data["turn"]))
 
     #Dying so go get food
@@ -25,6 +27,10 @@ def calculateDirection(data):
         print("headloc({} {}) + foodloc({} {})".format(body_pos[0]['x'], body_pos[0]['y'], nearest_food['x'], nearest_food['y']))
         return move.find_next_direction(body_pos, you, height, width, nearest_food)
 
+
     # Chase tail to stall out
     else:
-        return survive.findTail(you, body_pos, width, height)
+        return survive.find_tail(you=you,
+                                 occupied=body_pos,
+                                 width=width,
+                                 height=height)

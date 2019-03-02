@@ -1,58 +1,81 @@
 import json
 import random
-from util import CalculateDistance, optimal_move, possible_move, detect_box
+import util
 
 
-def directionToFood(food, you, occupied, height, width):
-    headPos = you[0]
 
-    dir = 'left'
-    movedTried = []
+def direction_to_food(food, you, occupied, height, width):
+    head_pos = you[0]
+    optimal_move_score = {}
+    possible_move_score = {}
 
-    if int(food["y"]) < int(headPos["y"]):
+    if int(food["y"]) < int(head_pos["y"]) and not util.check_lane(head_pos, occupied, "up", width, height):
         print('f trying up')
-        if optimal_move("up", you, occupied, height, width) and not detect_box("up", you):
-            return "up"
-    elif int(food["y"]) > int(headPos["y"]):
-        print('f trying down')
-        if optimal_move("down", you, occupied, height, width) and not detect_box("down", you):
-            return "down"
 
-    if int(food["x"]) < int(headPos["x"]):
+        if util.is_possible_move("up", you, occupied, height, width, spacing=2):
+            score = util.score_move(head_pos, occupied, "up")
+            optimal_move_score['up'] = score
+
+    elif int(food["y"]) > int(head_pos["y"]) and not util.check_lane(head_pos, occupied, "down", width, height):
+        print('f trying down')
+        if util.is_possible_move("down", you, occupied, height, width, spacing=2):
+            score = util.score_move(head_pos, occupied, "down")
+            optimal_move_score['down'] = score
+
+    if int(food["x"]) < int(head_pos["x"]) and not util.check_lane(head_pos, occupied, "left", width, height):
         print('f trying left')
-        if optimal_move("left", you, occupied, height, width) and not detect_box("left", you):
-            return "left"
-    elif int(food["x"]) > int(headPos["x"]):
+
+        if util.is_possible_move("left", you, occupied, height, width, spacing=2):
+            score = util.score_move(head_pos, occupied, "left")
+            optimal_move_score['left'] = score
+
+    elif int(food["x"]) > int(head_pos["x"]) and not util.check_lane(head_pos, occupied, "up", width, height):
         print('f trying right')
-        if optimal_move("right", you, occupied, height, width) and not detect_box("right", you):
-            return "right"
+        if util.is_possible_move("right", you, occupied, height, width, spacing=2):
+            score = util.score_move(head_pos, occupied, "right")
+            optimal_move_score['right'] = score
+
+    if optimal_move_score:
+        best_moves = util.minimums(optimal_move_score)
+        print("best moves are {} with scores {}".format(best_moves.keys(), best_moves.values()))
+        move = random.choice(best_moves.keys())
+        return move
 
     print('f I ended up in moveTried')
+    if util.is_possible_move("up", you, occupied, height, width):
+        score = util.score_move(head_pos, occupied, "up")
+        possible_move_score["up"] = score
 
-    while ("up" not in movedTried and "down" not in movedTried and "left" not in movedTried and "right" not in movedTried):
-        if "up" not in movedTried and possible_move("up", you, occupied, height, width) and not detect_box("up", you):
-            movedTried.append("up")
-        if "down" not in movedTried and possible_move("down", you, occupied, height, width) and not detect_box("down", you):
-            movedTried.append("down")
-        if "left" not in movedTried and possible_move("left", you, occupied, height, width) and not detect_box("left", you):
-            movedTried.append("left")
-        if "right" not in movedTried and possible_move("right", you, occupied, height, width) and not detect_box("right", you):
-            movedTried.append("right")
+    if util.is_possible_move("down", you, occupied, height, width):
+        score = util.score_move(head_pos, occupied, "down")
+        possible_move_score["down"] = score
 
-    if not movedTried:
-        dir = 'left'
+    if util.is_possible_move("left", you, occupied, height, width):
+        score = util.score_move(head_pos, occupied, "left")
+        possible_move_score["left"] = score
+
+    if util.is_possible_move("right", you, occupied, height, width):
+        score = util.score_move(head_pos, occupied, "right")
+        possible_move_score["right"] = score
+
+    if not possible_move_score:
+        print("failure, no possible moves, trying to go towards tail")
+        move = 'left'
+
     else:
-        dir = random.choice(movedTried)
-    print(dir)
-    return dir
+        best_moves = util.minimums(possible_move_score)
+        print("best moves are {} with scores {}".format(best_moves.keys(), best_moves.values()))
+        move = random.choice(best_moves.keys())
+    print(move)
+    return move
 
 
-def getClosestFood(foods, headPos):
-    closest_distance = CalculateDistance(foods[0], headPos)
+def get_closest_food(foods, headPos):
+    closest_distance = util.calculate_direction(foods[0], headPos)
     closest_food = foods[0]
 
     for food in foods:
-        new_distance = CalculateDistance(food, headPos)
+        new_distance = util.calculate_direction(food, headPos)
         if closest_distance > new_distance:
             closest_distance = new_distance
             closest_food = food
