@@ -26,67 +26,92 @@ def score_move(head, occupied, direction, width=0, height=0):
     def is_snake(start, finish, facing):
         count = 0
         if facing == 'left':
-            if any((loc["x"] == start["x"] - 2 and loc["y"] == start["y"]) or  # two spaces ahead
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 1)) or  # close top right
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 2)) or  # far top right
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 1)) or  # close top left
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["x"] == start["x"] - 2 and loc["y"] == start["y"]),  # two spaces ahead
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 1)),  # close top right
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] - 2)),  # far top right
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 1)),  # close top left
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] - 2))
+                        ]):  # far top left
+                    count += 1
 
         elif facing == 'right':
-            if any((loc["x"] == start["x"] + 2 and loc["y"] == start["y"]) or  # two spaces ahead
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 1)) or  # close top right
-                   (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 2)) or  # far top right
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 1)) or  # close top left
-                   (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["x"] == start["x"] + 2 and loc["y"] == start["y"]),  # two spaces ahead
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 1)),  # close top right
+                        (loc["y"] == (start["y"] + 1) and loc["x"] == (start["x"] + 2)),  # far top right
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 1)),  # close top left
+                        (loc["y"] == (start["y"] - 1) and loc["x"] == (start["x"] + 2))  # far top left
+                        ]):
+                    count += 1
 
         elif facing == 'down':
-            if any((loc["y"] == start["y"] + 2 and loc["x"] == start["x"]) or  # two spaces ahead
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 1)) or  # close top right
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 2)) or  # far top right
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 1)) or  # close top left
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["y"] == start["y"] + 2 and loc["x"] == start["x"]),  # two spaces ahead
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 1)),  # close top right
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] + 2)),  # far top right
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 1)),  # close top left
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] + 2))  # far top left
+                        ]):
+                    count += 1
 
         elif facing == 'up':
-            if any((loc["y"] == start["y"] - 2 and loc["x"] == start["x"]) or  # two spaces ahead
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 1)) or  # close top right
-                   (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 2)) or  # far top right
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 1)) or  # close top left
-                   (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 2))  # far top left
-                   for loc in finish):
-                count += 1
+            for loc in finish:
+                if any([(loc["y"] == start["y"] - 2 and loc["x"] == start["x"]),  # two spaces ahead
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 1)),  # close top right
+                        (loc["x"] == (start["x"] - 1) and loc["y"] == (start["y"] - 2)),  # far top right
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 1)),  # close top left
+                        (loc["x"] == (start["x"] + 1) and loc["y"] == (start["y"] - 2))  # far top left
+                        ]):
+                    count += 1
         return count
 
     def is_out(start, facing, x_boundary, y_boundary):
         if facing == 'left':
+            print("scoring left")
+            if (start["x"] - 1) <= -1:
+                return 2
             if (start["x"] - 2) <= -1:
                 return 1
-            elif (start["x"] - 1) <= -1:
-                return 2
+            return 0
 
         elif facing == "right":
-            if (start["x"] + 2) >= y_boundary:
-                return 1
-            if (start["x"] + 1) >= y_boundary:
+            print("scoring right")
+            if (start["x"] + 1) > x_boundary:
                 return 2
+            if (start["x"] + 2) > x_boundary:
+                return 1
+            return 0
 
         elif facing == 'up':
+            print("scoring up")
+            if (start["y"] - 1) <= -1:
+                return 2
             if (start["y"] - 2) <= -1:
                 return 1
-            elif (start["y"] - 1) <= -1:
-                return 2
+            return 0
 
         elif facing == 'down':
-            if (start["y"] + 1) >= x_boundary:
-                return 1
-            if (start["y"] + 1) >= x_boundary:
+            print("scoring down")
+            if (start["y"] + 1) >= y_boundary:
                 return 2
+            if (start["y"] + 2) >= y_boundary:
+                return 1
+            return 0
         return 0
+
+    snake_score = is_snake(start=head,
+                           finish=occupied,
+                           facing=direction)
+
+    out_score = is_out(start=head,
+                       facing=direction,
+                       x_boundary=width,
+                       y_boundary=height)
+
+    print ("snake: {}, out: {}".format(snake_score, out_score))
+
+    return snake_score + out_score
 
     snake_score = is_snake(start=head,
                            finish=occupied,
