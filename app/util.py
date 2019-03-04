@@ -113,17 +113,6 @@ def score_move(head, occupied, direction, width=0, height=0):
 
     return snake_score + out_score
 
-    snake_score = is_snake(start=head,
-                           finish=occupied,
-                           facing=direction)
-
-    out_score = is_out(start=head,
-                       facing=direction,
-                       x_boundary=width,
-                       y_boundary=height)
-
-    return snake_score + out_score
-
 
 def minimums(some_dict):
     """ Returns a list of all keys with the minimum value within a dictionary
