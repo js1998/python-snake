@@ -13,7 +13,7 @@ def find_tail(you, occupied, snake_heads, width, height):
     if head_pos['y'] < tail_pos['y'] and not util.check_lane(head_pos, occupied, "down", width, height):
         print('s trying down')
         if util.is_possible_move('down', you,snake_heads, occupied, width, height, spacing=2):
-            score = util.score_move(head_pos, occupied, "down")
+            score = util.score_move(head_pos, occupied, "down", width, height)
             optimal_move_score['down'] = score
 
     if head_pos['y'] > tail_pos['y'] and not util.check_lane(head_pos, occupied, "up", width, height):
@@ -25,7 +25,7 @@ def find_tail(you, occupied, snake_heads, width, height):
     if head_pos['x'] < tail_pos['x'] and not util.check_lane(head_pos, occupied, "right", width, height):
         print('s trying right')
         if util.is_possible_move('right', you, snake_heads, occupied, width, height, spacing=2):
-            score = util.score_move(head_pos, occupied, "right")
+            score = util.score_move(head_pos, occupied, "right", width, height)
             optimal_move_score['right'] = score
 
     if head_pos['x'] > tail_pos['x'] and not util.check_lane(head_pos, occupied, "left", width, height):
@@ -46,7 +46,7 @@ def find_tail(you, occupied, snake_heads, width, height):
         possible_move_score["up"] = score
 
     if util.is_possible_move("down", you, snake_heads, occupied, height, width):
-        score = util.score_move(head_pos, occupied, "down")
+        score = util.score_move(head_pos, occupied, "down", width, height)
         possible_move_score["down"] = score
 
     if util.is_possible_move("left", you, snake_heads, occupied, height, width):
@@ -54,7 +54,7 @@ def find_tail(you, occupied, snake_heads, width, height):
         possible_move_score["left"] = score
 
     if util.is_possible_move("right", you, snake_heads, occupied, height, width):
-        score = util.score_move(head_pos, occupied, "right")
+        score = util.score_move(head_pos, occupied, "right", width, height)
         possible_move_score["right"] = score
 
     if not possible_move_score:
